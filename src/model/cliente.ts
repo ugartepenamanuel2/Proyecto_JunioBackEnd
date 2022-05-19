@@ -2,14 +2,11 @@ import { Schema, model } from "mongoose";
 
 //schemas por subclase
 const ClienteSchema = new Schema({
-    id:{
-        type: Number
-    },
+    dni: {
+        type: String
+      },
     nombre:{
         type: String
-    },
-    dni: {
-      type: String
     },
     edad: {
         type: Number

@@ -17,10 +17,8 @@ const EmpleadoSchema = new Schema({
     },
     _sueldo:{
         type: Number
-    }, 
-    _horario:{
-        type: String
     }
+  
     
 
 });
@@ -32,7 +30,8 @@ export type tEmpleado = {
     _edad: number;
     _especialidades: string;
     _sueldo: number;
-    _horario: string
+    _horario: string;
+    _num_reparaciones: string
   };
 
   export type tDependiente = {
@@ -43,6 +42,7 @@ export type tEmpleado = {
     _sueldo: number;
     _horario:string;
   };
+
 
 
   export type mSalario = {

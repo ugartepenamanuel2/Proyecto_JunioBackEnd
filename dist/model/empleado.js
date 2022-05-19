@@ -18,9 +18,6 @@ const EmpleadoSchema = new mongoose_1.Schema({
     },
     _sueldo: {
         type: Number
-    },
-    _horario: {
-        type: String
     }
 });
 exports.Empleados = (0, mongoose_1.model)("Empleado", EmpleadoSchema);

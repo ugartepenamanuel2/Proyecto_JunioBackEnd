@@ -4,13 +4,10 @@ exports.Cliente = void 0;
 const mongoose_1 = require("mongoose");
 //schemas por subclase
 const ClienteSchema = new mongoose_1.Schema({
-    id: {
-        type: Number
-    },
-    nombre: {
+    dni: {
         type: String
     },
-    dni: {
+    nombre: {
         type: String
     },
     edad: {
