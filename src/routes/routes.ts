@@ -94,18 +94,15 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         const { id, nombre, modelo, categoria, gama, precio } = req.body;
         await db.conectarBD();
         const dSchema = {
-            _id :id,
-            _nombre: nombre,
-            _modelo:modelo,
-            _categoria:categoria,
-            _gama:gama,
-            _precio:precio
+            id:id,
+            nombre: nombre,
+            modelo:modelo,
+            categoria:categoria,
+            gama:gama,
+            precio:precio
         };
         const oSchema = new Producto (dSchema);
-        await oSchema
-          .save()
-          .then((doc: any) => res.send(doc))
-          .catch((err: any) => res.send("Error: " + err));
+        await oSchema.save()
         await db.desconectarBD();
       };
 
@@ -392,7 +389,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       private eliminarProducto = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
-        await Producto.findOneAndDelete({ _id: idd })
+        await Producto.findOneAndDelete({ id: idd })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -539,10 +536,10 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.post("/crearEmpleado", this.agregarEmpleado);
         this._router.post("/crearDependiente", this.agregarDependiente);
         this._router.post("/crearInformatico", this.agregarInformatico);
-        this._router.post("/crearProducto", this.agregarProducto);
-        this._router.post("/crearSobremesa", this.agregarSobremesa);
-        this._router.post("/crearPortatil", this.agregarPortatil);
-        this._router.post("/crearMovil", this.agregarMovil);
+        this._router.post("/producto/crearProducto", this.agregarProducto);
+        this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
+        this._router.post("/producto/crearPortatil", this.agregarPortatil);
+        this._router.post("/producto/crearMovil", this.agregarMovil);
         this._router.post("/crearCliente", this.agregarCliente);
         this._router.post("/crearVentas", this.agregarVentas);
        
@@ -550,17 +547,17 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         
         this._router.delete("/borrarCliente", this.eliminarCliente);
         this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
-        this._router.delete("/borrarProducto", this.eliminarProducto);
+        this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
         this._router.delete("/borrarVentas", this.eliminarVentas);
 
 
 
       // Funciones listar //
 
-        this._router.post("/listarCliente", this.listarCliente);
-        this._router.post("/listarEmpleado", this.listarEmpleado);
-        this._router.post("/listarProducto", this.listarProducto);
-        this._router.post("/listarVentas", this.listarVentas);
+        this._router.get("/listarCliente", this.listarCliente);
+        this._router.get("/listarEmpleado", this.listarEmpleado);
+        this._router.get("/producto/listarProducto", this.listarProducto);
+        this._router.get("/listarVentas", this.listarVentas);
        
        
     // Funciones Editar //
@@ -569,7 +566,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.put("/editarEmpleado", this.actualizarEmpleado);
         this._router.put("/editarInformatico", this.actualizarInformatico);
         this._router.put("/editarDependiente", this.actualizarDependiente);
-        this._router.put("/editarProducto", this.actualizarProducto);
+        this._router.put("/producto/editarProducto", this.actualizarProducto);
         this._router.put("/editarMovil", this.actualizarMovil);
         this._router.put("/editarPortatil", this.actualizarPortail);
         this._router.put("/editarSobremesa", this.actualizarSobremesa);

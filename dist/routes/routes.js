@@ -81,18 +81,15 @@ class DatoRoutes {
             const { id, nombre, modelo, categoria, gama, precio } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _id: id,
-                _nombre: nombre,
-                _modelo: modelo,
-                _categoria: categoria,
-                _gama: gama,
-                _precio: precio
+                id: id,
+                nombre: nombre,
+                modelo: modelo,
+                categoria: categoria,
+                gama: gama,
+                precio: precio
             };
             const oSchema = new producto_1.Producto(dSchema);
-            yield oSchema
-                .save()
-                .then((doc) => res.send(doc))
-                .catch((err) => res.send("Error: " + err));
+            yield oSchema.save();
             yield database_1.db.desconectarBD();
         });
         this.agregarSobremesa = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -288,7 +285,7 @@ class DatoRoutes {
         this.eliminarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
-            yield producto_1.Producto.findOneAndDelete({ _id: idd })
+            yield producto_1.Producto.findOneAndDelete({ id: idd })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -389,28 +386,28 @@ class DatoRoutes {
         this._router.post("/crearEmpleado", this.agregarEmpleado);
         this._router.post("/crearDependiente", this.agregarDependiente);
         this._router.post("/crearInformatico", this.agregarInformatico);
-        this._router.post("/crearProducto", this.agregarProducto);
-        this._router.post("/crearSobremesa", this.agregarSobremesa);
-        this._router.post("/crearPortatil", this.agregarPortatil);
-        this._router.post("/crearMovil", this.agregarMovil);
+        this._router.post("/producto/crearProducto", this.agregarProducto);
+        this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
+        this._router.post("/producto/crearPortatil", this.agregarPortatil);
+        this._router.post("/producto/crearMovil", this.agregarMovil);
         this._router.post("/crearCliente", this.agregarCliente);
         this._router.post("/crearVentas", this.agregarVentas);
         // Funciones Borrar //
         this._router.delete("/borrarCliente", this.eliminarCliente);
         this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
-        this._router.delete("/borrarProducto", this.eliminarProducto);
+        this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
         this._router.delete("/borrarVentas", this.eliminarVentas);
         // Funciones listar //
-        this._router.post("/listarCliente", this.listarCliente);
-        this._router.post("/listarEmpleado", this.listarEmpleado);
-        this._router.post("/listarProducto", this.listarProducto);
-        this._router.post("/listarVentas", this.listarVentas);
+        this._router.get("/listarCliente", this.listarCliente);
+        this._router.get("/listarEmpleado", this.listarEmpleado);
+        this._router.get("/producto/listarProducto", this.listarProducto);
+        this._router.get("/listarVentas", this.listarVentas);
         // Funciones Editar //
         this._router.put("/editarCliente", this.actualizarCliente);
         this._router.put("/editarEmpleado", this.actualizarEmpleado);
         this._router.put("/editarInformatico", this.actualizarInformatico);
         this._router.put("/editarDependiente", this.actualizarDependiente);
-        this._router.put("/editarProducto", this.actualizarProducto);
+        this._router.put("/producto/editarProducto", this.actualizarProducto);
         this._router.put("/editarMovil", this.actualizarMovil);
         this._router.put("/editarPortatil", this.actualizarPortail);
         this._router.put("/editarSobremesa", this.actualizarSobremesa);
