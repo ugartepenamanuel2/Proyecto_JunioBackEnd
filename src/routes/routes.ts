@@ -284,9 +284,9 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
         const {  id,nombre, modelo, categoria, gama, precio } = req.body;
-        await Empleados.findOneAndUpdate(
-          { _id: idd },
-          { _id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio},
+        await Producto.findOneAndUpdate(
+          { id: idd },
+          { id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio},
           { new: true }
         )
           .then((doc: any) => res.send(doc))
@@ -562,15 +562,15 @@ private agregarEmpleado = async (req: Request, res: Response) => {
        
     // Funciones Editar //
        
-        this._router.put("/editarCliente", this.actualizarCliente);
-        this._router.put("/editarEmpleado", this.actualizarEmpleado);
-        this._router.put("/editarInformatico", this.actualizarInformatico);
-        this._router.put("/editarDependiente", this.actualizarDependiente);
-        this._router.put("/producto/editarProducto", this.actualizarProducto);
-        this._router.put("/editarMovil", this.actualizarMovil);
-        this._router.put("/editarPortatil", this.actualizarPortail);
-        this._router.put("/editarSobremesa", this.actualizarSobremesa);
-        this._router.put("/editarVentas", this.actualizarVentas);
+        this._router.get("/editarCliente", this.actualizarCliente);
+        this._router.get("/editarEmpleado", this.actualizarEmpleado);
+        this._router.get("/editarInformatico", this.actualizarInformatico);
+        this._router.get("/editarDependiente", this.actualizarDependiente);
+        this._router.get("/producto/editarProducto/:id", this.actualizarProducto);
+        this._router.get("/editarMovil", this.actualizarMovil);
+        this._router.get("/editarPortatil", this.actualizarPortail);
+        this._router.get("/editarSobremesa", this.actualizarSobremesa);
+        this._router.get("/editarVentas", this.actualizarVentas);
 
 
 

@@ -224,7 +224,7 @@ class DatoRoutes {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
             const { id, nombre, modelo, categoria, gama, precio } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _id: idd }, { _id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio }, { new: true })
+            yield producto_1.Producto.findOneAndUpdate({ id: idd }, { id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -403,15 +403,15 @@ class DatoRoutes {
         this._router.get("/producto/listarProducto", this.listarProducto);
         this._router.get("/listarVentas", this.listarVentas);
         // Funciones Editar //
-        this._router.put("/editarCliente", this.actualizarCliente);
-        this._router.put("/editarEmpleado", this.actualizarEmpleado);
-        this._router.put("/editarInformatico", this.actualizarInformatico);
-        this._router.put("/editarDependiente", this.actualizarDependiente);
-        this._router.put("/producto/editarProducto", this.actualizarProducto);
-        this._router.put("/editarMovil", this.actualizarMovil);
-        this._router.put("/editarPortatil", this.actualizarPortail);
-        this._router.put("/editarSobremesa", this.actualizarSobremesa);
-        this._router.put("/editarVentas", this.actualizarVentas);
+        this._router.get("/editarCliente", this.actualizarCliente);
+        this._router.get("/editarEmpleado", this.actualizarEmpleado);
+        this._router.get("/editarInformatico", this.actualizarInformatico);
+        this._router.get("/editarDependiente", this.actualizarDependiente);
+        this._router.get("/producto/editarProducto/:id", this.actualizarProducto);
+        this._router.get("/editarMovil", this.actualizarMovil);
+        this._router.get("/editarPortatil", this.actualizarPortail);
+        this._router.get("/editarSobremesa", this.actualizarSobremesa);
+        this._router.get("/editarVentas", this.actualizarVentas);
         // Funciones de Calculo //
         this._router.get("/calculoSueldoDependiente", this.calculoSueldo);
     }
