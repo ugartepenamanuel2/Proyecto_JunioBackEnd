@@ -1,4 +1,4 @@
-export  class Ventas {
+export  class Venta {
     private _cod_compra:number;
     private _comprador:string;
     private _vendedor:string;

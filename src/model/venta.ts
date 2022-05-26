@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 //schemas por subclase
-const VentasSchema = new Schema({
+const VentaSchema = new Schema({
     cod_compra:{
         type: Number
     },
@@ -19,4 +19,4 @@ const VentasSchema = new Schema({
     }
 
 });
-export const Ventas = model("Ventas", VentasSchema);
+export const Venta = model("Venta", VentaSchema);

@@ -5,7 +5,7 @@ import { db } from '../database/database'
 import { Cliente } from '../model/cliente'
 import { Empleados, mSalario, tDependiente, tEmpleado } from '../model/empleado'
 import { Producto } from '../model/producto'
-import { Ventas } from '../model/ventas'
+import { Venta } from '../model/venta'
 
 
 
@@ -190,7 +190,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
 
 
-      private agregarVentas = async (req: Request, res: Response) => {
+      private agregarVenta = async (req: Request, res: Response) => {
         const { cod_compra, comprador, vendedor, producto, precio} = req.body;
         await db.conectarBD();
         const dSchema = {
@@ -200,7 +200,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
             _producto:producto,
             _precio:precio
         };
-        const oSchema = new Ventas (dSchema);
+        const oSchema = new Venta (dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -340,7 +340,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
-      private actualizarVentas = async (req: Request, res: Response) => {
+      private actualizarVenta = async (req: Request, res: Response) => {
         await db.conectarBD();
         const codigo = req.params.cod_compra;
         const {  cod_compra, comprador, vendedor, producto, precio, } = req.body;
@@ -397,10 +397,10 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
 
-      private eliminarVentas = async (req: Request, res: Response) => {
+      private eliminarVenta = async (req: Request, res: Response) => {
         await db.conectarBD();
         const codigo = req.params.cod_compra;
-        await Ventas.findOneAndDelete({ _cod_compra: codigo })
+        await Venta.findOneAndDelete({ _cod_compra: codigo })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -453,11 +453,12 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
 
-      private listarVentas = async (req: Request, res: Response) => {
+     
+      private listarVenta = async (req: Request, res: Response) => {
         await db
           .conectarBD()
           .then(async (mensaje) => {
-            const query = await Ventas.find();
+            const query = await Venta.find({});
             res.json(query);
           })
           .catch((mensaje) => {
@@ -465,8 +466,6 @@ private agregarEmpleado = async (req: Request, res: Response) => {
           });
         await db.desconectarBD();
       };
-
-
 
 
 
@@ -541,14 +540,14 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.post("/producto/crearPortatil", this.agregarPortatil);
         this._router.post("/producto/crearMovil", this.agregarMovil);
         this._router.post("/crearCliente", this.agregarCliente);
-        this._router.post("/crearVentas", this.agregarVentas);
+        this._router.post("/crearVenta", this.agregarVenta);
        
         // Funciones Borrar //
         
         this._router.delete("/borrarCliente", this.eliminarCliente);
         this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
         this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
-        this._router.delete("/borrarVentas", this.eliminarVentas);
+        this._router.delete("/borrarVenta", this.eliminarVenta);
 
 
 
@@ -557,7 +556,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.get("/listarCliente", this.listarCliente);
         this._router.get("/listarEmpleado", this.listarEmpleado);
         this._router.get("/producto/listarProducto", this.listarProducto);
-        this._router.get("/listarVentas", this.listarVentas);
+        this._router.get("/venta/listarVenta", this.listarVenta);
        
        
     // Funciones Editar //
@@ -570,7 +569,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.get("/editarMovil", this.actualizarMovil);
         this._router.get("/editarPortatil", this.actualizarPortail);
         this._router.get("/editarSobremesa", this.actualizarSobremesa);
-        this._router.get("/editarVentas", this.actualizarVentas);
+        this._router.get("/editarVenta", this.actualizarVenta);
 
 
 
