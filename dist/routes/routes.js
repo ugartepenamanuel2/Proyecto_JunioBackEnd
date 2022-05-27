@@ -77,26 +77,11 @@ class DatoRoutes {
             yield database_1.db.desconectarBD();
         });
         //  Agregar Producto  //
-        this.agregarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, modelo, categoria, gama, precio } = req.body;
-            yield database_1.db.conectarBD();
-            const dSchema = {
-                id: id,
-                nombre: nombre,
-                modelo: modelo,
-                categoria: categoria,
-                gama: gama,
-                precio: precio
-            };
-            const oSchema = new producto_1.Producto(dSchema);
-            yield oSchema.save();
-            yield database_1.db.desconectarBD();
-        });
         this.agregarSobremesa = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
+            const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _id: id,
+                _codProducto: codProducto,
                 _nombre: nombre,
                 _modelo: modelo,
                 _categoria: categoria,
@@ -104,18 +89,34 @@ class DatoRoutes {
                 _precio: precio,
                 _tipoPlaca: tipoPlaca
             };
-            const oSchema = new producto_1.Producto(dSchema);
+            const oSchema = new producto_1.Productos(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        this.agregarPortatil = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, modelo, categoria, gama, precio, tipoPlaca, bateria } = req.body;
+        this.agregarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _id: id,
+                _codProducto: codProducto,
+                _nombre: nombre,
+                _modelo: modelo,
+                _categoria: categoria,
+                _gama: gama,
+                _precio: precio,
+                _tipoPlaca: tipoPlaca
+            };
+            const oSchema = new producto_1.Productos(dSchema);
+            yield oSchema.save();
+            yield database_1.db.desconectarBD();
+        });
+        this.agregarPortatil = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca, bateria } = req.body;
+            yield database_1.db.conectarBD();
+            const dSchema = {
+                _codProducto: codProducto,
                 _nombre: nombre,
                 _modelo: modelo,
                 _categoria: categoria,
@@ -124,7 +125,7 @@ class DatoRoutes {
                 _tipoPlaca: tipoPlaca,
                 _bateria: bateria
             };
-            const oSchema = new producto_1.Producto(dSchema);
+            const oSchema = new producto_1.Productos(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
@@ -132,10 +133,10 @@ class DatoRoutes {
             yield database_1.db.desconectarBD();
         });
         this.agregarMovil = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, nombre, modelo, categoria, gama, precio, tipoPlaca, pantalla } = req.body;
+            const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca, pantalla } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _id: id,
+                _codProducto: codProducto,
                 _nombre: nombre,
                 _modelo: modelo,
                 _categoria: categoria,
@@ -144,7 +145,7 @@ class DatoRoutes {
                 _tipoPlaca: tipoPlaca,
                 _pantalla: pantalla
             };
-            const oSchema = new producto_1.Producto(dSchema);
+            const oSchema = new producto_1.Productos(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
@@ -159,7 +160,7 @@ class DatoRoutes {
                 _nombre: nombre,
                 _edad: edad
             };
-            const oSchema = new cliente_1.Cliente(dSchema);
+            const oSchema = new cliente_1.Clientes(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
@@ -176,7 +177,7 @@ class DatoRoutes {
                 _producto: producto,
                 _precio: precio
             };
-            const oSchema = new venta_1.Venta(dSchema);
+            const oSchema = new venta_1.Ventas(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
@@ -188,7 +189,7 @@ class DatoRoutes {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
             const { dni, nombre, edad } = req.body;
-            yield cliente_1.Cliente.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad }, { new: true })
+            yield cliente_1.Clientes.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -224,25 +225,25 @@ class DatoRoutes {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
             const { id, nombre, modelo, categoria, gama, precio } = req.body;
-            yield producto_1.Producto.findOneAndUpdate({ id: idd }, { id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio }, { new: true })
+            yield producto_1.Productos.findOneAndUpdate({ id: idd }, { id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
         this.actualizarMovil = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            const idd = req.params.id;
-            const { id, nombre, modelo, categoria, gama, precio, pantalla } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _id: idd }, { _id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _pantalla: pantalla }, { new: true })
+            const idd = req.params.codProducto;
+            const { codProducto, nombre, modelo, categoria, gama, precio, pantalla } = req.body;
+            yield producto_1.Productos.findOneAndUpdate({ _codProducto: idd }, { _codProducto: codProducto, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _pantalla: pantalla }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
         this.actualizarPortail = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            const idd = req.params.id;
-            const { id, nombre, modelo, categoria, gama, precio, bateria } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _id: idd }, { _id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria }, { new: true })
+            const idd = req.params.codProducto;
+            const { codProducto, nombre, modelo, categoria, gama, precio, bateria } = req.body;
+            yield empleado_1.Empleados.findOneAndUpdate({ _codProducto: idd }, { _codProducto: codProducto, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -269,7 +270,7 @@ class DatoRoutes {
         this.eliminarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
-            yield cliente_1.Cliente.findOneAndDelete({ _dni: documento })
+            yield cliente_1.Clientes.findOneAndDelete({ _dni: documento })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -285,7 +286,7 @@ class DatoRoutes {
         this.eliminarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
-            yield producto_1.Producto.findOneAndDelete({ id: idd })
+            yield producto_1.Productos.findOneAndDelete({ id: idd })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -293,7 +294,7 @@ class DatoRoutes {
         this.eliminarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const codigo = req.params.cod_compra;
-            yield venta_1.Venta.findOneAndDelete({ _cod_compra: codigo })
+            yield venta_1.Ventas.findOneAndDelete({ _cod_compra: codigo })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -303,7 +304,7 @@ class DatoRoutes {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const query = yield cliente_1.Cliente.find();
+                const query = yield cliente_1.Clientes.find();
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -323,11 +324,11 @@ class DatoRoutes {
             });
             yield database_1.db.desconectarBD();
         });
-        this.listarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.listarProductos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const query = yield producto_1.Producto.find();
+                const query = yield producto_1.Productos.find();
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -335,11 +336,19 @@ class DatoRoutes {
             });
             yield database_1.db.desconectarBD();
         });
+        this.listarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD();
+            const cod = req.params.codProducto;
+            yield producto_1.Productos.findOne({ _codProducto: cod })
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send("Error: " + err));
+            yield database_1.db.desconectarBD();
+        });
         this.listarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const query = yield venta_1.Venta.find({});
+                const query = yield venta_1.Ventas.find({});
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -400,15 +409,16 @@ class DatoRoutes {
         // Funciones listar //
         this._router.get("/listarCliente", this.listarCliente);
         this._router.get("/listarEmpleado", this.listarEmpleado);
-        this._router.get("/producto/listarProducto", this.listarProducto);
+        this._router.get("/producto/listarProducto", this.listarProductos);
         this._router.get("/venta/listarVenta", this.listarVenta);
+        this._router.get("/verProducto/:codProducto", this.listarProducto);
         // Funciones Editar //
         this._router.get("/editarCliente", this.actualizarCliente);
         this._router.get("/editarEmpleado", this.actualizarEmpleado);
         this._router.get("/editarInformatico", this.actualizarInformatico);
         this._router.get("/editarDependiente", this.actualizarDependiente);
         this._router.get("/producto/editarProducto/:id", this.actualizarProducto);
-        this._router.get("/editarMovil", this.actualizarMovil);
+        this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.get("/editarPortatil", this.actualizarPortail);
         this._router.get("/editarSobremesa", this.actualizarSobremesa);
         this._router.get("/editarVenta", this.actualizarVenta);

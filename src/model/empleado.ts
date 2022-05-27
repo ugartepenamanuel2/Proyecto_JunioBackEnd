@@ -22,7 +22,7 @@ const EmpleadoSchema = new Schema({
     
 
 });
-export const Empleados = model("Empleado", EmpleadoSchema);
+export const Empleados = model("empleados", EmpleadoSchema);
 
 export type tEmpleado = {
     _dni: string;

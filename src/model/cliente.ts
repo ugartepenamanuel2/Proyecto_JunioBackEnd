@@ -2,16 +2,16 @@ import { Schema, model } from "mongoose";
 
 //schemas por subclase
 const ClienteSchema = new Schema({
-    dni: {
+    _dni: {
         type: String
       },
-    nombre:{
+    _nombre:{
         type: String
     },
-    edad: {
+    _edad: {
         type: Number
     }
     
 
 });
-export const Cliente = model("Cliente", ClienteSchema);
+export const Clientes = model("clientes", ClienteSchema);

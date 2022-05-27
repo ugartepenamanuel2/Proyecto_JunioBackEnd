@@ -2,24 +2,30 @@ import { Schema, model } from "mongoose";
 
 //schemas por subclase
 const ProductoSchema = new Schema({
-    id:{
+    _codProducto:{
         type: Number
     },
-    nombre:{
+    _nombre:{
         type: String
     },
-    modelo: {
+    _modelo: {
       type: String
     },
-    categoria: {
+    _categoria: {
       type: String
     },
-    gama:{
+    _gama:{
         type: String
     },
-    precio:{
+    _precio:{
         type: Number
+    },
+    _tipoPlaca:{
+        type: String
+    },
+    _pantalla:{
+        type:String
     }
 
 });
-export const Producto = model("Producto", ProductoSchema);
+export const Productos = model("productos", ProductoSchema);

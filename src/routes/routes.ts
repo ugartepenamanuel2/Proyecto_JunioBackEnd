@@ -1,11 +1,11 @@
 import { Request, Response, Router } from 'express'
 import { Dependiente } from '../classes/empleado/dependiente'
-import { Empleado } from '../classes/empleado/empleado'
+import { Empleado} from '../classes/empleado/empleado'
 import { db } from '../database/database'
-import { Cliente } from '../model/cliente'
+import { Clientes } from '../model/cliente'
 import { Empleados, mSalario, tDependiente, tEmpleado } from '../model/empleado'
-import { Producto } from '../model/producto'
-import { Venta } from '../model/venta'
+import { Productos } from '../model/producto'
+import { Ventas } from '../model/venta'
 
 
 
@@ -90,35 +90,19 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
       //  Agregar Producto  //
 
-      private agregarProducto = async (req: Request, res: Response) => {
-        const { id, nombre, modelo, categoria, gama, precio } = req.body;
-        await db.conectarBD();
-        const dSchema = {
-            id:id,
-            nombre: nombre,
-            modelo:modelo,
-            categoria:categoria,
-            gama:gama,
-            precio:precio
-        };
-        const oSchema = new Producto (dSchema);
-        await oSchema.save()
-        await db.desconectarBD();
-      };
-
       private agregarSobremesa = async (req: Request, res: Response) => {
-        const { id, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
+        const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
         await db.conectarBD();
         const dSchema = {
-            _id :id,
-            _nombre: nombre,
-            _modelo:modelo,
-            _categoria:categoria,
-            _gama:gama,
-            _precio:precio,
-            _tipoPlaca:tipoPlaca
+          _codProducto: codProducto,
+          _nombre: nombre,
+          _modelo: modelo,
+          _categoria: categoria,
+          _gama: gama,
+          _precio: precio,
+          _tipoPlaca: tipoPlaca
         };
-        const oSchema = new Producto (dSchema);
+        const oSchema = new Productos(dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -126,12 +110,29 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
-
-      private agregarPortatil = async (req: Request, res: Response) => {
-        const { id, nombre, modelo, categoria, gama, precio, tipoPlaca, bateria } = req.body;
+      private agregarProducto = async (req: Request, res: Response) => {
+        const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
         await db.conectarBD();
         const dSchema = {
-            _id :id,
+            _codProducto:codProducto,
+            _nombre: nombre,
+            _modelo:modelo,
+            _categoria:categoria,
+            _gama:gama,
+            _precio:precio,
+            _tipoPlaca:tipoPlaca
+        };
+        const oSchema = new Productos(dSchema);
+        await oSchema.save()
+        await db.desconectarBD();
+      };
+
+
+      private agregarPortatil = async (req: Request, res: Response) => {
+        const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca, bateria } = req.body;
+        await db.conectarBD();
+        const dSchema = {
+            _codProducto :codProducto,
             _nombre: nombre,
             _modelo:modelo,
             _categoria:categoria,
@@ -140,7 +141,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
             _tipoPlaca:tipoPlaca,
             _bateria:bateria
         };
-        const oSchema = new Producto (dSchema);
+        const oSchema = new Productos(dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -149,10 +150,10 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
       private agregarMovil = async (req: Request, res: Response) => {
-        const { id, nombre, modelo, categoria, gama, precio, tipoPlaca, pantalla } = req.body;
+        const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca, pantalla } = req.body;
         await db.conectarBD();
         const dSchema = {
-            _id :id,
+            _codProducto :codProducto,
             _nombre: nombre,
             _modelo:modelo,
             _categoria:categoria,
@@ -161,7 +162,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
             _tipoPlaca:tipoPlaca,
             _pantalla:pantalla
         };
-        const oSchema = new Producto (dSchema);
+        const oSchema = new Productos(dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -180,7 +181,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
             _nombre:nombre,
             _edad:edad
         };
-        const oSchema = new Cliente (dSchema);
+        const oSchema = new Clientes(dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -200,7 +201,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
             _producto:producto,
             _precio:precio
         };
-        const oSchema = new Venta (dSchema);
+        const oSchema = new Ventas(dSchema);
         await oSchema
           .save()
           .then((doc: any) => res.send(doc))
@@ -218,7 +219,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.conectarBD();
         const documento = req.params.dni;
         const {  dni,nombre, edad } = req.body;
-        await Cliente.findOneAndUpdate(
+        await Clientes.findOneAndUpdate(
           { _dni: documento },
           { _dni: dni,_nombre: nombre, _edad: edad},
           { new: true }
@@ -284,7 +285,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
         const {  id,nombre, modelo, categoria, gama, precio } = req.body;
-        await Producto.findOneAndUpdate(
+        await Productos.findOneAndUpdate(
           { id: idd },
           { id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio},
           { new: true }
@@ -296,11 +297,11 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
       private actualizarMovil = async (req: Request, res: Response) => {
         await db.conectarBD();
-        const idd = req.params.id;
-        const {  id,nombre, modelo, categoria, gama, precio, pantalla } = req.body;
-        await Empleados.findOneAndUpdate(
-          { _id: idd },
-          { _id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _pantalla: pantalla},
+        const idd = req.params.codProducto;
+        const { codProducto,nombre, modelo, categoria, gama, precio, pantalla } = req.body;
+        await Productos.findOneAndUpdate(
+          { _codProducto: idd },
+          { _codProducto: codProducto,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _pantalla: pantalla},
           { new: true }
         )
           .then((doc: any) => res.send(doc))
@@ -311,11 +312,11 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
       private actualizarPortail = async (req: Request, res: Response) => {
         await db.conectarBD();
-        const idd = req.params.id;
-        const {  id,nombre, modelo, categoria, gama, precio, bateria } = req.body;
+        const idd = req.params.codProducto;
+        const {  codProducto,nombre, modelo, categoria, gama, precio, bateria } = req.body;
         await Empleados.findOneAndUpdate(
-          { _id: idd },
-          { _id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria},
+          { _codProducto: idd },
+          { _codProducto: codProducto,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria},
           { new: true }
         )
           .then((doc: any) => res.send(doc))
@@ -366,7 +367,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       private eliminarCliente = async (req: Request, res: Response) => {
         await db.conectarBD();
         const documento = req.params.dni;
-        await Cliente.findOneAndDelete({ _dni: documento })
+        await Clientes.findOneAndDelete({ _dni: documento })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -389,7 +390,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       private eliminarProducto = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
-        await Producto.findOneAndDelete({ id: idd })
+        await Productos.findOneAndDelete({ id: idd })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -400,7 +401,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       private eliminarVenta = async (req: Request, res: Response) => {
         await db.conectarBD();
         const codigo = req.params.cod_compra;
-        await Venta.findOneAndDelete({ _cod_compra: codigo })
+        await Ventas.findOneAndDelete({ _cod_compra: codigo })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -415,7 +416,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db
           .conectarBD()
           .then(async (mensaje) => {
-            const query = await Cliente.find();
+            const query = await Clientes.find();
             res.json(query);
           })
           .catch((mensaje) => {
@@ -439,16 +440,26 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
 
-      private listarProducto = async (req: Request, res: Response) => {
+      private listarProductos = async (req: Request, res: Response) => {
         await db
           .conectarBD()
           .then(async (mensaje) => {
-            const query = await Producto.find();
+            const query = await Productos.find();
             res.json(query);
           })
           .catch((mensaje) => {
             res.send(mensaje);
           });
+        await db.desconectarBD();
+      };
+
+      private listarProducto = async (req: Request, res: Response) => {
+        await db.conectarBD();
+        const cod = req.params.codProducto;
+        await Productos.findOne({ _codProducto: cod })
+          .then((doc: any) => res.send(doc))
+          .catch((err: any) => res.send("Error: " + err));
+    
         await db.desconectarBD();
       };
 
@@ -458,7 +469,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db
           .conectarBD()
           .then(async (mensaje) => {
-            const query = await Venta.find({});
+            const query = await Ventas.find({});
             res.json(query);
           })
           .catch((mensaje) => {
@@ -555,8 +566,9 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
         this._router.get("/listarCliente", this.listarCliente);
         this._router.get("/listarEmpleado", this.listarEmpleado);
-        this._router.get("/producto/listarProducto", this.listarProducto);
+        this._router.get("/producto/listarProducto", this.listarProductos);
         this._router.get("/venta/listarVenta", this.listarVenta);
+        this._router.get("/verProducto/:codProducto", this.listarProducto);
        
        
     // Funciones Editar //
@@ -566,7 +578,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.get("/editarInformatico", this.actualizarInformatico);
         this._router.get("/editarDependiente", this.actualizarDependiente);
         this._router.get("/producto/editarProducto/:id", this.actualizarProducto);
-        this._router.get("/editarMovil", this.actualizarMovil);
+        this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.get("/editarPortatil", this.actualizarPortail);
         this._router.get("/editarSobremesa", this.actualizarSobremesa);
         this._router.get("/editarVenta", this.actualizarVenta);

@@ -1,26 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Producto = void 0;
+exports.Productos = void 0;
 const mongoose_1 = require("mongoose");
 //schemas por subclase
 const ProductoSchema = new mongoose_1.Schema({
-    id: {
+    _codProducto: {
         type: Number
     },
-    nombre: {
+    _nombre: {
         type: String
     },
-    modelo: {
+    _modelo: {
         type: String
     },
-    categoria: {
+    _categoria: {
         type: String
     },
-    gama: {
+    _gama: {
         type: String
     },
-    precio: {
+    _precio: {
         type: Number
+    },
+    _tipoPlaca: {
+        type: String
+    },
+    _pantalla: {
+        type: String
     }
 });
-exports.Producto = (0, mongoose_1.model)("Producto", ProductoSchema);
+exports.Productos = (0, mongoose_1.model)("productos", ProductoSchema);
