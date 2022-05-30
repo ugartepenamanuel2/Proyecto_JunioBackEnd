@@ -259,9 +259,9 @@ class DatoRoutes {
         });
         this.actualizarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            const codigo = req.params.cod_compra;
+            const codigo = req.params.codigo;
             const { cod_compra, comprador, vendedor, producto, precio, } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _cod_compra: codigo }, { _cod_compra: cod_compra, _comprador: comprador, _vendedor: vendedor, _producto: producto, _precio: precio }, { new: true })
+            yield venta_1.Ventas.findOneAndUpdate({ _cod_compra: codigo }, { _cod_compra: cod_compra, _comprador: comprador, _vendedor: vendedor, _producto: producto, _precio: precio }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -270,7 +270,7 @@ class DatoRoutes {
         this.eliminarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
-            yield cliente_1.Clientes.findOneAndDelete({ _dni: documento })
+            yield cliente_1.Clientes.findOneAndDelete({ dni: documento })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -278,7 +278,7 @@ class DatoRoutes {
         this.eliminarEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
-            yield empleado_1.Empleados.findOneAndDelete({ _dni: documento })
+            yield empleado_1.Empleados.findOneAndDelete({ dni: documento })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -294,7 +294,7 @@ class DatoRoutes {
         this.eliminarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const codigo = req.params.cod_compra;
-            yield venta_1.Ventas.findOneAndDelete({ _cod_compra: codigo })
+            yield venta_1.Ventas.findOneAndDelete({ cod_compra: codigo })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -344,7 +344,7 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        this.listarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.listarVentas = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
@@ -354,6 +354,14 @@ class DatoRoutes {
                 .catch((mensaje) => {
                 res.send(mensaje);
             });
+            yield database_1.db.desconectarBD();
+        });
+        this.listarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD();
+            const codigo = req.params.codigo;
+            yield venta_1.Ventas.findOne({ _cod_compra: codigo })
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
         // Calculo //
@@ -399,29 +407,30 @@ class DatoRoutes {
         this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
         this._router.post("/producto/crearPortatil", this.agregarPortatil);
         this._router.post("/producto/crearMovil", this.agregarMovil);
-        this._router.post("/crearCliente", this.agregarCliente);
-        this._router.post("/crearVenta", this.agregarVenta);
+        this._router.post("/cliente/crearCliente", this.agregarCliente);
+        this._router.post("/venta/crearVenta", this.agregarVenta);
         // Funciones Borrar //
-        this._router.delete("/borrarCliente", this.eliminarCliente);
+        this._router.delete("/cliente/borrarCliente/:dni", this.eliminarCliente);
         this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
         this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
-        this._router.delete("/borrarVenta", this.eliminarVenta);
+        this._router.delete("/venta/borrarVenta/:cod_compra", this.eliminarVenta);
         // Funciones listar //
-        this._router.get("/listarCliente", this.listarCliente);
+        this._router.get("/cliente/listarCliente", this.listarCliente);
         this._router.get("/listarEmpleado", this.listarEmpleado);
         this._router.get("/producto/listarProducto", this.listarProductos);
-        this._router.get("/venta/listarVenta", this.listarVenta);
+        this._router.get("/venta/listarVentas", this.listarVentas);
+        this._router.get("/venta/listarVenta/:codigo", this.listarVenta);
         this._router.get("/verProducto/:codProducto", this.listarProducto);
         // Funciones Editar //
-        this._router.get("/editarCliente", this.actualizarCliente);
-        this._router.get("/editarEmpleado", this.actualizarEmpleado);
-        this._router.get("/editarInformatico", this.actualizarInformatico);
-        this._router.get("/editarDependiente", this.actualizarDependiente);
-        this._router.get("/producto/editarProducto/:id", this.actualizarProducto);
+        this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
+        this._router.put("/editarEmpleado", this.actualizarEmpleado);
+        this._router.put("/editarInformatico", this.actualizarInformatico);
+        this._router.put("/editarDependiente", this.actualizarDependiente);
+        this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
-        this._router.get("/editarPortatil", this.actualizarPortail);
-        this._router.get("/editarSobremesa", this.actualizarSobremesa);
-        this._router.get("/editarVenta", this.actualizarVenta);
+        this._router.put("/editarPortatil", this.actualizarPortail);
+        this._router.put("/editarSobremesa", this.actualizarSobremesa);
+        this._router.put("/venta/editarVenta/:codigo", this.actualizarVenta);
         // Funciones de Calculo //
         this._router.get("/calculoSueldoDependiente", this.calculoSueldo);
     }
