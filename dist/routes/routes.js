@@ -410,7 +410,7 @@ class DatoRoutes {
         // Funciones agregar //
         this._router.post("/crearEmpleado", this.agregarEmpleado);
         this._router.post("/crearDependiente", this.agregarDependiente);
-        this._router.post("/crearInformatico", this.agregarInformatico);
+        this._router.post("/empleado/crearInformatico", this.agregarInformatico);
         this._router.post("/producto/crearProducto", this.agregarProducto);
         this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
         this._router.post("/producto/crearPortatil", this.agregarPortatil);
@@ -433,7 +433,7 @@ class DatoRoutes {
         // Funciones Editar //
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
         this._router.put("/editarEmpleado", this.actualizarEmpleado);
-        this._router.put("/editarInformatico", this.actualizarInformatico);
+        this._router.put("/empleado/editarInformatico", this.actualizarInformatico);
         this._router.put("/editarDependiente", this.actualizarDependiente);
         this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
