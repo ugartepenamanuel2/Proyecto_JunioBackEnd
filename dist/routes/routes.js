@@ -241,18 +241,18 @@ class DatoRoutes {
         });
         this.actualizarPortail = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            const idd = req.params.codProducto;
+            const idd = req.params.codigo;
             const { codProducto, nombre, modelo, categoria, gama, precio, bateria } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _codProducto: idd }, { _codProducto: codProducto, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria }, { new: true })
+            yield producto_1.Productos.findOneAndUpdate({ _codProducto: idd }, { _codProducto: codProducto, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _bateria: bateria }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
         this.actualizarSobremesa = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            const idd = req.params.id;
-            const { id, nombre, modelo, categoria, gama, precio, pantalla } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _id: idd }, { _id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _pantalla: pantalla }, { new: true })
+            const idd = req.params.codProducto;
+            const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
+            yield producto_1.Productos.findOneAndUpdate({ _codProducto: idd }, { _codProducto: codProducto, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio, _tipoPlaca: tipoPlaca }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -364,6 +364,14 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        this.listarClientes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD();
+            const dni = req.params.dni;
+            yield cliente_1.Clientes.findOne({ _dni: dni })
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send("Error: " + err));
+            yield database_1.db.desconectarBD();
+        });
         // Calculo //
         this.calculoSueldo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
@@ -420,6 +428,7 @@ class DatoRoutes {
         this._router.get("/producto/listarProducto", this.listarProductos);
         this._router.get("/venta/listarVentas", this.listarVentas);
         this._router.get("/venta/listarVenta/:codigo", this.listarVenta);
+        this._router.get("/cliente/listarClientes/:dni", this.listarClientes);
         this._router.get("/verProducto/:codProducto", this.listarProducto);
         // Funciones Editar //
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
@@ -428,8 +437,8 @@ class DatoRoutes {
         this._router.put("/editarDependiente", this.actualizarDependiente);
         this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
-        this._router.put("/editarPortatil", this.actualizarPortail);
-        this._router.put("/editarSobremesa", this.actualizarSobremesa);
+        this._router.put("/editarPortatil/:codigo", this.actualizarPortail);
+        this._router.put("/editarSobremesa/:codProducto", this.actualizarSobremesa);
         this._router.put("/venta/editarVenta/:codigo", this.actualizarVenta);
         // Funciones de Calculo //
         this._router.get("/calculoSueldoDependiente", this.calculoSueldo);

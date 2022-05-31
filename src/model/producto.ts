@@ -25,6 +25,9 @@ const ProductoSchema = new Schema({
     },
     _pantalla:{
         type:String
+    },
+    _bateria:{
+        type:Number
     }
 
 });

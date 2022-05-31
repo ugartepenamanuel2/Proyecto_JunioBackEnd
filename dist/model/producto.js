@@ -27,6 +27,9 @@ const ProductoSchema = new mongoose_1.Schema({
     },
     _pantalla: {
         type: String
+    },
+    _bateria: {
+        type: Number
     }
 });
 exports.Productos = (0, mongoose_1.model)("productos", ProductoSchema);
