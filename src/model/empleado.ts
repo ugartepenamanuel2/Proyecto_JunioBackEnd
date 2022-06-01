@@ -17,7 +17,13 @@ const EmpleadoSchema = new Schema({
     },
     _sueldo:{
         type: Number
-    }
+    },
+    _horario:{
+      type: String
+  },
+  _num_reparaciones:{
+    type: String
+}
   
     
 

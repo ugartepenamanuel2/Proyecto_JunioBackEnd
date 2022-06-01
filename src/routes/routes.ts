@@ -28,13 +28,13 @@ class DatoRoutes {
 
 
 private agregarInformatico = async (req: Request, res: Response) => {
-  const { dni, nombre, edad, especilidades, sueldo, num_reparaciones } = req.body;
+  const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
   await db.conectarBD();
   const dSchema = {
       _dni :dni,
       _nombre: nombre,
       _edad:edad,
-      _especilidades:especilidades,
+      _especialidades:especialidades,
       _sueldo:sueldo,
       _num_reparaciones:num_reparaciones
   };
@@ -499,6 +499,16 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
+      private listarUnEmpleado = async (req: Request, res: Response) => {
+        await db.conectarBD();
+        const dni = req.params.dni;
+        await Empleados.findOne({ _dni: dni })
+          .then((doc: any) => res.send(doc))
+          .catch((err: any) => res.send("Error: " + err));
+    
+        await db.desconectarBD();
+      };
+
 
 
 
@@ -562,7 +572,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       // Funciones agregar //
 
         this._router.post("/crearEmpleado", this.agregarEmpleado);
-        this._router.post("/crearDependiente", this.agregarDependiente);
+        this._router.post("/empleado/crearDependiente", this.agregarDependiente);
         this._router.post("/empleado/crearInformatico", this.agregarInformatico);
         this._router.post("/producto/crearProducto", this.agregarProducto);
         this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
@@ -574,7 +584,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         // Funciones Borrar //
         
         this._router.delete("/cliente/borrarCliente/:dni", this.eliminarCliente);
-        this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
+        this._router.delete("/borrarEmpleado/:dni", this.eliminarEmpleado);
         this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
         this._router.delete("/venta/borrarVenta/:cod_compra", this.eliminarVenta);
 
@@ -588,6 +598,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         this._router.get("/venta/listarVentas", this.listarVentas);
         this._router.get("/venta/listarVenta/:codigo", this.listarVenta);
         this._router.get("/cliente/listarClientes/:dni", this.listarClientes);
+        this._router.get("/listarEmpleado/:dni", this.listarUnEmpleado);
         this._router.get("/verProducto/:codProducto", this.listarProducto);
        
        
@@ -595,8 +606,8 @@ private agregarEmpleado = async (req: Request, res: Response) => {
        
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
         this._router.put("/editarEmpleado", this.actualizarEmpleado);
-        this._router.put("/empleado/editarInformatico", this.actualizarInformatico);
-        this._router.put("/editarDependiente", this.actualizarDependiente);
+        this._router.put("/empleado/editarInformatico/:dni", this.actualizarInformatico);
+        this._router.put("/empleado/editarDependiente/:dni", this.actualizarDependiente);
         this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.put("/editarPortatil/:codigo", this.actualizarPortail);

@@ -24,13 +24,13 @@ class DatoRoutes {
         });
         // Agregar Empleado //
         this.agregarInformatico = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { dni, nombre, edad, especilidades, sueldo, num_reparaciones } = req.body;
+            const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
                 _dni: dni,
                 _nombre: nombre,
                 _edad: edad,
-                _especilidades: especilidades,
+                _especialidades: especialidades,
                 _sueldo: sueldo,
                 _num_reparaciones: num_reparaciones
             };
@@ -372,6 +372,14 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        this.listarUnEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD();
+            const dni = req.params.dni;
+            yield empleado_1.Empleados.findOne({ _dni: dni })
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send("Error: " + err));
+            yield database_1.db.desconectarBD();
+        });
         // Calculo //
         this.calculoSueldo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
@@ -409,7 +417,7 @@ class DatoRoutes {
         this._router.get('/', this.index);
         // Funciones agregar //
         this._router.post("/crearEmpleado", this.agregarEmpleado);
-        this._router.post("/crearDependiente", this.agregarDependiente);
+        this._router.post("/empleado/crearDependiente", this.agregarDependiente);
         this._router.post("/empleado/crearInformatico", this.agregarInformatico);
         this._router.post("/producto/crearProducto", this.agregarProducto);
         this._router.post("/producto/crearSobremesa", this.agregarSobremesa);
@@ -419,7 +427,7 @@ class DatoRoutes {
         this._router.post("/venta/crearVenta", this.agregarVenta);
         // Funciones Borrar //
         this._router.delete("/cliente/borrarCliente/:dni", this.eliminarCliente);
-        this._router.delete("/borrarEmpleado", this.eliminarEmpleado);
+        this._router.delete("/borrarEmpleado/:dni", this.eliminarEmpleado);
         this._router.delete("/producto/borrarProducto/:id", this.eliminarProducto);
         this._router.delete("/venta/borrarVenta/:cod_compra", this.eliminarVenta);
         // Funciones listar //
@@ -429,12 +437,13 @@ class DatoRoutes {
         this._router.get("/venta/listarVentas", this.listarVentas);
         this._router.get("/venta/listarVenta/:codigo", this.listarVenta);
         this._router.get("/cliente/listarClientes/:dni", this.listarClientes);
+        this._router.get("/listarEmpleado/:dni", this.listarUnEmpleado);
         this._router.get("/verProducto/:codProducto", this.listarProducto);
         // Funciones Editar //
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
         this._router.put("/editarEmpleado", this.actualizarEmpleado);
-        this._router.put("/empleado/editarInformatico", this.actualizarInformatico);
-        this._router.put("/editarDependiente", this.actualizarDependiente);
+        this._router.put("/empleado/editarInformatico/:dni", this.actualizarInformatico);
+        this._router.put("/empleado/editarDependiente/:dni", this.actualizarDependiente);
         this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.put("/editarPortatil/:codigo", this.actualizarPortail);
