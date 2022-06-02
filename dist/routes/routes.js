@@ -19,7 +19,7 @@ const cliente_1 = require("../model/cliente");
 const empleado_2 = require("../model/empleado");
 const producto_1 = require("../model/producto");
 const venta_1 = require("../model/venta");
-class DatoRoutes {
+class IndexRoutes {
     constructor() {
         this.index = (req, res) => __awaiter(this, void 0, void 0, function* () {
             res.send(html);
@@ -392,7 +392,7 @@ class DatoRoutes {
         return this._router;
     }
     // Funciones //    
-    misRutas() {
+    routes() {
         //Función Básica //
         this._router.get('/', this.index);
         // Funciones agregar //
@@ -430,9 +430,9 @@ class DatoRoutes {
         this._router.get("/calculoSueldoEmpleados", this.calculoSueldo);
     }
 }
-const obj = new DatoRoutes();
-obj.misRutas();
-exports.routes = obj.router;
+const indexRoutes = new IndexRoutes();
+indexRoutes.routes();
+exports.routes = indexRoutes.router;
 function html(html) {
     throw new Error('Function not implemented.');
 }

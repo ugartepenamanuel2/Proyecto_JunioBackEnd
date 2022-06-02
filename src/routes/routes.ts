@@ -10,7 +10,7 @@ import { Ventas } from '../model/venta'
 
 
 
-class DatoRoutes {
+class IndexRoutes {
     private _router: Router
 
     constructor() {
@@ -551,7 +551,7 @@ private agregarInformatico = async (req: Request, res: Response) => {
 
     // Funciones //    
 
-    misRutas() {
+    routes() {
  
 
       //Función Básica //
@@ -613,9 +613,9 @@ private agregarInformatico = async (req: Request, res: Response) => {
     }
 }
 
-const obj = new DatoRoutes()
-obj.misRutas()
-export const routes = obj.router
+const indexRoutes = new IndexRoutes();
+indexRoutes.routes();
+export const routes = indexRoutes.router;
 
 
 function html(html: any) {
