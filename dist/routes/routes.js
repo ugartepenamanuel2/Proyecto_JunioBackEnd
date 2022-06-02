@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.routes = void 0;
 const express_1 = require("express");
 const dependiente_1 = require("../classes/empleado/dependiente");
+const empleado_1 = require("../classes/empleado/empleado");
+const informatico_1 = require("../classes/empleado/informatico");
 const database_1 = require("../database/database");
 const cliente_1 = require("../model/cliente");
-const empleado_1 = require("../model/empleado");
+const empleado_2 = require("../model/empleado");
 const producto_1 = require("../model/producto");
 const venta_1 = require("../model/venta");
 class DatoRoutes {
@@ -22,7 +24,7 @@ class DatoRoutes {
         this.index = (req, res) => __awaiter(this, void 0, void 0, function* () {
             res.send(html);
         });
-        // Agregar Empleado //
+        // Agregar Empleados //
         this.agregarInformatico = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
             yield database_1.db.conectarBD();
@@ -34,24 +36,7 @@ class DatoRoutes {
                 _sueldo: sueldo,
                 _num_reparaciones: num_reparaciones
             };
-            const oSchema = new empleado_1.Empleados(dSchema);
-            yield oSchema
-                .save()
-                .then((doc) => res.send(doc))
-                .catch((err) => res.send("Error: " + err));
-            yield database_1.db.desconectarBD();
-        });
-        this.agregarEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { dni, nombre, edad, especilidades, sueldo } = req.body;
-            yield database_1.db.conectarBD();
-            const dSchema = {
-                _dni: dni,
-                _nombre: nombre,
-                _edad: edad,
-                _especilidades: especilidades,
-                _sueldo: sueldo
-            };
-            const oSchema = new empleado_1.Empleados(dSchema);
+            const oSchema = new empleado_2.Empleados(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
@@ -69,14 +54,14 @@ class DatoRoutes {
                 _sueldo: sueldo,
                 _horario: horario
             };
-            const oSchema = new empleado_1.Empleados(dSchema);
+            const oSchema = new empleado_2.Empleados(dSchema);
             yield oSchema
                 .save()
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        //  Agregar Producto  //
+        //  Agregar Productos  //
         this.agregarSobremesa = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
             yield database_1.db.conectarBD();
@@ -152,6 +137,7 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        //  Agregar clientes  //
         this.agregarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { dni, nombre, edad } = req.body;
             yield database_1.db.conectarBD();
@@ -184,7 +170,7 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        // Editar //
+        // Editar Clientes //
         this.actualizarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
@@ -194,20 +180,12 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        this.actualizarEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            yield database_1.db.conectarBD();
-            const documento = req.params.dni;
-            const { dni, nombre, edad, especialidades, sueldo, horario } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _horario: horario }, { new: true })
-                .then((doc) => res.send(doc))
-                .catch((err) => res.send("Error: " + err));
-            yield database_1.db.desconectarBD();
-        });
+        // Editar Empleados //
         this.actualizarInformatico = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
             const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _num_reparaciones: num_reparaciones }, { new: true })
+            yield empleado_2.Empleados.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _num_reparaciones: num_reparaciones }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -216,20 +194,12 @@ class DatoRoutes {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
             const { dni, nombre, edad, especialidades, sueldo, horario } = req.body;
-            yield empleado_1.Empleados.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _horario: horario }, { new: true })
+            yield empleado_2.Empleados.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _horario: horario }, { new: true })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        this.actualizarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            yield database_1.db.conectarBD();
-            const idd = req.params.id;
-            const { id, nombre, modelo, categoria, gama, precio } = req.body;
-            yield producto_1.Productos.findOneAndUpdate({ id: idd }, { id: id, _nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio }, { new: true })
-                .then((doc) => res.send(doc))
-                .catch((err) => res.send("Error: " + err));
-            yield database_1.db.desconectarBD();
-        });
+        // Editar Productos //
         this.actualizarMovil = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const idd = req.params.codProducto;
@@ -266,31 +236,34 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        // Eliminar //
+        // Eliminar Clientes //
         this.eliminarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
-            yield cliente_1.Clientes.findOneAndDelete({ dni: documento })
+            yield cliente_1.Clientes.findOneAndDelete({ _dni: documento })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Eliminar Empleados //
         this.eliminarEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const documento = req.params.dni;
-            yield empleado_1.Empleados.findOneAndDelete({ dni: documento })
+            yield empleado_2.Empleados.findOneAndDelete({ _dni: documento })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Eliminar Productos //
         this.eliminarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
-            yield producto_1.Productos.findOneAndDelete({ id: idd })
+            yield producto_1.Productos.findOneAndDelete({ _id: idd })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Eliminar Ventas //
         this.eliminarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const codigo = req.params.cod_compra;
@@ -299,7 +272,7 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
-        // Listar //
+        // Listar Clientes //
         this.listarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
@@ -312,11 +285,12 @@ class DatoRoutes {
             });
             yield database_1.db.desconectarBD();
         });
+        // Listar Empleados //
         this.listarEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const query = yield empleado_1.Empleados.find();
+                const query = yield empleado_2.Empleados.find();
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -324,6 +298,7 @@ class DatoRoutes {
             });
             yield database_1.db.desconectarBD();
         });
+        // Listar Productos //
         this.listarProductos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db
                 .conectarBD()
@@ -344,9 +319,9 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Listar Ventas //
         this.listarVentas = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            yield database_1.db
-                .conectarBD()
+            yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 const query = yield venta_1.Ventas.find({});
                 res.json(query);
@@ -364,6 +339,7 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Listar Clientes //
         this.listarClientes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const dni = req.params.dni;
@@ -372,10 +348,11 @@ class DatoRoutes {
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
         });
+        // Listar Empleados //
         this.listarUnEmpleado = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const dni = req.params.dni;
-            yield empleado_1.Empleados.findOne({ _dni: dni })
+            yield empleado_2.Empleados.findOne({ _dni: dni })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -383,25 +360,28 @@ class DatoRoutes {
         // Calculo //
         this.calculoSueldo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
-            let mEmpleado;
+            let mEmpleado = new empleado_1.Empleado("", "", 0, "", 0);
             let dEmpleado;
             let arrayEmpleado = [];
-            const query = yield empleado_1.Empleados.find({});
+            const query = yield empleado_2.Empleados.find({});
             for (dEmpleado of query) {
                 if (dEmpleado._especialidades == 'Dependiente') {
                     mEmpleado = new dependiente_1.Dependiente(dEmpleado._dni, dEmpleado._nombre, dEmpleado._edad, dEmpleado._especialidades, dEmpleado._sueldo, dEmpleado._horario);
-                    let salarioT = 0;
-                    salarioT = mEmpleado.calculoSueldo_Neto();
-                    let dSalario = {
-                        _dni: null,
-                        _nombre: null,
-                        _sueldo: null
-                    };
-                    dSalario._dni = mEmpleado.dni;
-                    dSalario._nombre = mEmpleado.nombre;
-                    dSalario._sueldo = salarioT;
-                    arrayEmpleado.push(dSalario);
                 }
+                else if (dEmpleado._especialidades == 'Informatico') {
+                    mEmpleado = new informatico_1.Informatico(dEmpleado._dni, dEmpleado._nombre, dEmpleado._edad, dEmpleado._especialidades, dEmpleado._sueldo, dEmpleado._num_reparaciones);
+                }
+                let totalS = 0;
+                totalS = mEmpleado.calculoSueldo_Neto();
+                let cEmpleado = {
+                    _dni: null,
+                    _nombre: null,
+                    _sueldo: null
+                };
+                cEmpleado._dni = mEmpleado.dni;
+                cEmpleado._nombre = mEmpleado.nombre;
+                cEmpleado._sueldo = totalS;
+                arrayEmpleado.push(cEmpleado);
             }
             res.json(arrayEmpleado);
             yield database_1.db.desconectarBD();
@@ -416,7 +396,6 @@ class DatoRoutes {
         //Función Básica //
         this._router.get('/', this.index);
         // Funciones agregar //
-        this._router.post("/crearEmpleado", this.agregarEmpleado);
         this._router.post("/empleado/crearDependiente", this.agregarDependiente);
         this._router.post("/empleado/crearInformatico", this.agregarInformatico);
         this._router.post("/producto/crearProducto", this.agregarProducto);
@@ -441,16 +420,14 @@ class DatoRoutes {
         this._router.get("/verProducto/:codProducto", this.listarProducto);
         // Funciones Editar //
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
-        this._router.put("/editarEmpleado", this.actualizarEmpleado);
         this._router.put("/empleado/editarInformatico/:dni", this.actualizarInformatico);
         this._router.put("/empleado/editarDependiente/:dni", this.actualizarDependiente);
-        this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.put("/editarPortatil/:codigo", this.actualizarPortail);
         this._router.put("/editarSobremesa/:codProducto", this.actualizarSobremesa);
         this._router.put("/venta/editarVenta/:codigo", this.actualizarVenta);
         // Funciones de Calculo //
-        this._router.get("/calculoSueldoDependiente", this.calculoSueldo);
+        this._router.get("/calculoSueldoEmpleados", this.calculoSueldo);
     }
 }
 const obj = new DatoRoutes();

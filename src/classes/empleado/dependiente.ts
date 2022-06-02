@@ -12,11 +12,22 @@ export class Dependiente extends Empleado {
 
     override calculoSueldo_Neto(){
         let sueldoNeto = super.calculoSueldo_Neto();
-        let plus = this._horario
         let salario = 0
-        if (plus == "V") {
-           salario =  sueldoNeto + 15
-        }
+        switch (this._horario) {
+            case 'V':
+              salario = sueldoNeto + 15
+              break;
+            case 'S':
+                salario = sueldoNeto + 30
+              break;
+              case 'D':
+                salario = sueldoNeto + 50
+              break;
+           
+            default:
+              salario = sueldoNeto
+              break;
+          }
 
         return Math.round(salario)
        }

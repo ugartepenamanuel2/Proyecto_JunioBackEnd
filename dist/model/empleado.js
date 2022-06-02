@@ -23,7 +23,7 @@ const EmpleadoSchema = new mongoose_1.Schema({
         type: String
     },
     _num_reparaciones: {
-        type: String
+        type: Number
     }
 });
 exports.Empleados = (0, mongoose_1.model)("empleados", EmpleadoSchema);

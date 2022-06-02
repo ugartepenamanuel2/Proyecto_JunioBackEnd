@@ -27,8 +27,9 @@ class Empleado {
     // 1300
     calculoSueldo_Neto() {
         let sueldoBase = this._sueldo;
-        let impuestos = sueldoBase * 0.7;
-        return impuestos;
+        let impuestos = sueldoBase * 0.21;
+        let totalE = impuestos + sueldoBase;
+        return totalE;
     }
 }
 exports.Empleado = Empleado;

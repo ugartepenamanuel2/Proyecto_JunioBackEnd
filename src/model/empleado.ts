@@ -22,7 +22,7 @@ const EmpleadoSchema = new Schema({
       type: String
   },
   _num_reparaciones:{
-    type: String
+    type: Number
 }
   
     
@@ -37,7 +37,7 @@ export type tEmpleado = {
     _especialidades: string;
     _sueldo: number;
     _horario: string;
-    _num_reparaciones: string
+    _num_reparaciones: number
   };
 
   export type tDependiente = {

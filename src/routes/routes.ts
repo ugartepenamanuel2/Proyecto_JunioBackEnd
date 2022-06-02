@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { Dependiente } from '../classes/empleado/dependiente'
 import { Empleado} from '../classes/empleado/empleado'
+import { Informatico } from '../classes/empleado/informatico'
 import { db } from '../database/database'
 import { Clientes } from '../model/cliente'
 import { Empleados, mSalario, tDependiente, tEmpleado } from '../model/empleado'
@@ -24,7 +25,7 @@ class DatoRoutes {
     }
 
 
-// Agregar Empleado //
+// Agregar Empleados //
 
 
 private agregarInformatico = async (req: Request, res: Response) => {
@@ -49,23 +50,7 @@ private agregarInformatico = async (req: Request, res: Response) => {
 
 
 
-private agregarEmpleado = async (req: Request, res: Response) => {
-        const { dni, nombre, edad, especilidades, sueldo } = req.body;
-        await db.conectarBD();
-        const dSchema = {
-            _dni :dni,
-            _nombre: nombre,
-            _edad:edad,
-            _especilidades:especilidades,
-            _sueldo:sueldo
-        };
-        const oSchema = new Empleados(dSchema);
-        await oSchema
-          .save()
-          .then((doc: any) => res.send(doc))
-          .catch((err: any) => res.send("Error: " + err));
-        await db.desconectarBD();
-      };
+
 
       private agregarDependiente = async (req: Request, res: Response) => {
         const { dni, nombre, edad, especialidades, sueldo, horario } = req.body;
@@ -88,7 +73,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
 
 
-      //  Agregar Producto  //
+      //  Agregar Productos  //
 
       private agregarSobremesa = async (req: Request, res: Response) => {
         const { codProducto, nombre, modelo, categoria, gama, precio, tipoPlaca } = req.body;
@@ -171,7 +156,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
-     
+     //  Agregar clientes  //
      
      
       private agregarCliente = async (req: Request, res: Response) => {
@@ -213,7 +198,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
 
 
-      // Editar //
+      // Editar Clientes //
 
 
       private actualizarCliente = async (req: Request, res: Response) => {
@@ -232,21 +217,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
 
-      private actualizarEmpleado = async (req: Request, res: Response) => {
-        await db.conectarBD();
-        const documento = req.params.dni;
-        const {  dni,nombre, edad, especialidades, sueldo, horario } = req.body;
-        await Empleados.findOneAndUpdate(
-          { _dni: documento },
-          { _dni: dni,_nombre: nombre, _edad: edad, _especialidades: especialidades, _sueldo: sueldo, _horario: horario},
-          { new: true }
-        )
-          .then((doc: any) => res.send(doc))
-          .catch((err: any) => res.send("Error: " + err));
-    
-        await db.desconectarBD();
-      };
-
+   // Editar Empleados //
 
 
       private actualizarInformatico = async (req: Request, res: Response) => {
@@ -282,20 +253,13 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
-      private actualizarProducto = async (req: Request, res: Response) => {
-        await db.conectarBD();
-        const idd = req.params.id;
-        const {  id,nombre, modelo, categoria, gama, precio } = req.body;
-        await Productos.findOneAndUpdate(
-          { id: idd },
-          { id: id,_nombre: nombre, _modelo: modelo, _categoria: categoria, _gama: gama, _precio: precio},
-          { new: true }
-        )
-          .then((doc: any) => res.send(doc))
-          .catch((err: any) => res.send("Error: " + err));
-    
-        await db.desconectarBD();
-      };
+
+  // Editar Productos //
+
+
+      
+
+      
       private actualizarMovil = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.codProducto;
@@ -363,40 +327,47 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
 
 
-      // Eliminar //
+      // Eliminar Clientes //
 
       private eliminarCliente = async (req: Request, res: Response) => {
         await db.conectarBD();
         const documento = req.params.dni;
-        await Clientes.findOneAndDelete({ dni: documento })
+        await Clientes.findOneAndDelete({ _dni: documento })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
         await db.desconectarBD();
       };
 
+
+      // Eliminar Empleados //
 
 
       private eliminarEmpleado = async (req: Request, res: Response) => {
         await db.conectarBD();
         const documento = req.params.dni;
-        await Empleados.findOneAndDelete({ dni: documento })
+        await Empleados.findOneAndDelete({ _dni: documento })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
         await db.desconectarBD();
       };
+
+// Eliminar Productos //
+
 
 
       private eliminarProducto = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
-        await Productos.findOneAndDelete({ id: idd })
+        await Productos.findOneAndDelete({ _id: idd })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
         await db.desconectarBD();
       };
+
+// Eliminar Ventas //
 
 
       private eliminarVenta = async (req: Request, res: Response) => {
@@ -411,7 +382,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
 
 
-      // Listar //
+      // Listar Clientes //
 
       private listarCliente = async (req: Request, res: Response) => {
         await db
@@ -427,6 +398,9 @@ private agregarEmpleado = async (req: Request, res: Response) => {
       };
 
 
+
+       // Listar Empleados //
+
       private listarEmpleado = async (req: Request, res: Response) => {
         await db
           .conectarBD()
@@ -440,6 +414,9 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
+
+
+       // Listar Productos //
 
       private listarProductos = async (req: Request, res: Response) => {
         await db
@@ -464,11 +441,10 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
-
+ // Listar Ventas //
      
       private listarVentas = async (req: Request, res: Response) => {
-        await db
-          .conectarBD()
+        await db.conectarBD()
           .then(async (mensaje) => {
             const query = await Ventas.find({});
             res.json(query);
@@ -489,6 +465,8 @@ private agregarEmpleado = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
+       // Listar Clientes //
+
       private listarClientes = async (req: Request, res: Response) => {
         await db.conectarBD();
         const dni = req.params.dni;
@@ -498,6 +476,9 @@ private agregarEmpleado = async (req: Request, res: Response) => {
     
         await db.desconectarBD();
       };
+
+
+       // Listar Empleados //
 
       private listarUnEmpleado = async (req: Request, res: Response) => {
         await db.conectarBD();
@@ -518,7 +499,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
       private calculoSueldo = async (req: Request, res: Response) => {
         await db.conectarBD();
-        let mEmpleado: Empleado
+        let mEmpleado: Empleado = new Empleado("","",0,"",0)
         let dEmpleado: tEmpleado
         let arrayEmpleado: Array<mSalario> = []
     
@@ -534,23 +515,31 @@ private agregarEmpleado = async (req: Request, res: Response) => {
                 dEmpleado._sueldo,
                 dEmpleado._horario
               )
-              let salarioT: number = 0
-              salarioT = mEmpleado.calculoSueldo_Neto()
-    
-              let dSalario: mSalario = {
+            }else if(dEmpleado._especialidades == 'Informatico'){
+              mEmpleado = new Informatico(
+              dEmpleado._dni,
+                dEmpleado._nombre,
+                dEmpleado._edad,
+                dEmpleado._especialidades,
+                dEmpleado._sueldo,
+                dEmpleado._num_reparaciones
+              )
+            }
+
+              let totalS: number = 0;
+              totalS = mEmpleado.calculoSueldo_Neto()
+
+              let cEmpleado: mSalario = {
                 _dni: null,
                 _nombre: null,
                 _sueldo: null
-    
               }
-    
-              dSalario._dni = mEmpleado.dni
-              dSalario._nombre = mEmpleado.nombre
-              dSalario._sueldo = salarioT
-    
-    
-              arrayEmpleado.push(dSalario)
-            }
+
+              cEmpleado._dni = mEmpleado.dni;
+              cEmpleado._nombre = mEmpleado.nombre;
+              cEmpleado._sueldo = totalS;
+
+              arrayEmpleado.push(cEmpleado)
             
     
           }
@@ -571,7 +560,6 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
       // Funciones agregar //
 
-        this._router.post("/crearEmpleado", this.agregarEmpleado);
         this._router.post("/empleado/crearDependiente", this.agregarDependiente);
         this._router.post("/empleado/crearInformatico", this.agregarInformatico);
         this._router.post("/producto/crearProducto", this.agregarProducto);
@@ -605,10 +593,8 @@ private agregarEmpleado = async (req: Request, res: Response) => {
     // Funciones Editar //
        
         this._router.put("/cliente/editarCliente/:dni", this.actualizarCliente);
-        this._router.put("/editarEmpleado", this.actualizarEmpleado);
         this._router.put("/empleado/editarInformatico/:dni", this.actualizarInformatico);
         this._router.put("/empleado/editarDependiente/:dni", this.actualizarDependiente);
-        this._router.put("/producto/editarProducto/:id", this.actualizarProducto);
         this._router.put("/editarMovil/:codProducto", this.actualizarMovil);
         this._router.put("/editarPortatil/:codigo", this.actualizarPortail);
         this._router.put("/editarSobremesa/:codProducto", this.actualizarSobremesa);
@@ -619,7 +605,7 @@ private agregarEmpleado = async (req: Request, res: Response) => {
 
         // Funciones de Calculo //
 
-        this._router.get("/calculoSueldoDependiente", this.calculoSueldo);
+        this._router.get("/calculoSueldoEmpleados", this.calculoSueldo);
         
         
         

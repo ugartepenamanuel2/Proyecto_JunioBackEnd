@@ -37,9 +37,10 @@ export  class Empleado {
 
     calculoSueldo_Neto(){
         let sueldoBase = this._sueldo
-        let impuestos = sueldoBase * 0.7
+        let impuestos = sueldoBase * 0.21
+        let totalE = impuestos + sueldoBase
 
-        return impuestos;
+        return totalE;
     }
 
     
