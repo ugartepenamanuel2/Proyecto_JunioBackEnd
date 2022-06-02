@@ -8,7 +8,7 @@ export class Dependiente extends Empleado {
         super(dni,nombre,edad,especilidades,sueldo);
         this._horario = horario;
     }
-
+// Calculo de dependiente //
 
     override calculoSueldo_Neto(){
         let sueldoNeto = super.calculoSueldo_Neto();

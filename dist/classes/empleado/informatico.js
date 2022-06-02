@@ -7,6 +7,7 @@ class Informatico extends empleado_1.Empleado {
         super(dni, nombre, edad, especilidades, sueldo);
         this._num_reparaciones = num_reparaciones;
     }
+    // Calculo de informático //
     calculoSueldo_Neto() {
         let sueldoNeto = super.calculoSueldo_Neto();
         let total = 0;

@@ -26,8 +26,10 @@ class IndexRoutes {
         });
         // Agregar Empleados //
         this.agregarInformatico = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            //Campos del formulario//
             const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
             yield database_1.db.conectarBD();
+            // dSchema son los campos de empleados
             const dSchema = {
                 _dni: dni,
                 _nombre: nombre,
@@ -36,11 +38,17 @@ class IndexRoutes {
                 _sueldo: sueldo,
                 _num_reparaciones: num_reparaciones
             };
+            // Creas Empleados de tipo empleado//
             const oSchema = new empleado_2.Empleados(dSchema);
+            // Hasta que no se complete no lo guarda//
             yield oSchema
+                // Para guardarlo //
                 .save()
+                // Si se completa te manda el documento//
                 .then((doc) => res.send(doc))
+                // Error//
                 .catch((err) => res.send("Error: " + err));
+            // Se desconecta de la base de datos //
             yield database_1.db.desconectarBD();
         });
         this.agregarDependiente = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -173,9 +181,13 @@ class IndexRoutes {
         // Editar Clientes //
         this.actualizarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
+            //El parametro dni se asigna a la variable documento //
             const documento = req.params.dni;
+            // Le llega el formulario de cliente//
             const { dni, nombre, edad } = req.body;
+            // Busca por el dni y lo actualiza //
             yield cliente_1.Clientes.findOneAndUpdate({ _dni: documento }, { _dni: dni, _nombre: nombre, _edad: edad }, { new: true })
+                // Te da el documento //
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -239,6 +251,7 @@ class IndexRoutes {
         // Eliminar Clientes //
         this.eliminarCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
+            //dni se asigna a la variable documento //
             const documento = req.params.dni;
             yield cliente_1.Clientes.findOneAndDelete({ _dni: documento })
                 .then((doc) => res.send(doc))
@@ -258,7 +271,7 @@ class IndexRoutes {
         this.eliminarProducto = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
             const idd = req.params.id;
-            yield producto_1.Productos.findOneAndDelete({ _id: idd })
+            yield producto_1.Productos.findOneAndDelete({ _codProducto: idd })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
             yield database_1.db.desconectarBD();
@@ -277,6 +290,7 @@ class IndexRoutes {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
+                // Busca en clientes  //
                 const query = yield cliente_1.Clientes.find();
                 res.json(query);
             }))
@@ -333,7 +347,9 @@ class IndexRoutes {
         });
         this.listarVenta = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
+            //El parametro cod_compra se asigna a la variable codigo //   
             const codigo = req.params.codigo;
+            // Te busca uno de la cod_compra que tenga codigo  //
             yield venta_1.Ventas.findOne({ _cod_compra: codigo })
                 .then((doc) => res.send(doc))
                 .catch((err) => res.send("Error: " + err));
@@ -360,27 +376,37 @@ class IndexRoutes {
         // Calculo //
         this.calculoSueldo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             yield database_1.db.conectarBD();
+            // Variables   //             
             let mEmpleado = new empleado_1.Empleado("", "", 0, "", 0);
             let dEmpleado;
+            // Array de salario //
             let arrayEmpleado = [];
+            // Buscamos todos los empleados y es un array de documento que se guarda en query //
             const query = yield empleado_2.Empleados.find({});
+            // Recorremos el array //
             for (dEmpleado of query) {
+                // Si es un dependiente busca un dependiente y si no es informatico //
                 if (dEmpleado._especialidades == 'Dependiente') {
                     mEmpleado = new dependiente_1.Dependiente(dEmpleado._dni, dEmpleado._nombre, dEmpleado._edad, dEmpleado._especialidades, dEmpleado._sueldo, dEmpleado._horario);
                 }
                 else if (dEmpleado._especialidades == 'Informatico') {
                     mEmpleado = new informatico_1.Informatico(dEmpleado._dni, dEmpleado._nombre, dEmpleado._edad, dEmpleado._especialidades, dEmpleado._sueldo, dEmpleado._num_reparaciones);
                 }
+                // Variable total Salario//
                 let totalS = 0;
                 totalS = mEmpleado.calculoSueldo_Neto();
+                // Variable cEmpleado que se a de tipo mSalario, y eso datos son lo que le va a llegar a la grafica//
                 let cEmpleado = {
                     _dni: null,
                     _nombre: null,
                     _sueldo: null
                 };
+                // Le decimos a cada campo lo que vale  //
                 cEmpleado._dni = mEmpleado.dni;
                 cEmpleado._nombre = mEmpleado.nombre;
+                // Aquí le pasamos el sueldo totalS  //
                 cEmpleado._sueldo = totalS;
+                // Añadimos a la array //
                 arrayEmpleado.push(cEmpleado);
             }
             res.json(arrayEmpleado);

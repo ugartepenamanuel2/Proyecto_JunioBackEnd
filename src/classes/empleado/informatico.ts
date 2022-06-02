@@ -8,7 +8,7 @@ export class Informatico extends Empleado {
         super(dni,nombre,edad,especilidades,sueldo);
         this._num_reparaciones = num_reparaciones;
     }
-
+// Calculo de informático //
 
     override calculoSueldo_Neto(){
         let sueldoNeto = super.calculoSueldo_Neto();

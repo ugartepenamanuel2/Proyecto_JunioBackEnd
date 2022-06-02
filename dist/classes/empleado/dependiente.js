@@ -7,6 +7,7 @@ class Dependiente extends empleado_1.Empleado {
         super(dni, nombre, edad, especilidades, sueldo);
         this._horario = horario;
     }
+    // Calculo de dependiente //
     calculoSueldo_Neto() {
         let sueldoNeto = super.calculoSueldo_Neto();
         let salario = 0;

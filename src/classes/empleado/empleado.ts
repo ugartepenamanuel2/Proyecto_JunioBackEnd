@@ -33,7 +33,9 @@ export  class Empleado {
         return this._sueldo
     }
    
-    // 1300
+    
+
+// Cañculos de impuestos//
 
     calculoSueldo_Neto(){
         let sueldoBase = this._sueldo

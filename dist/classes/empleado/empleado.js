@@ -24,7 +24,7 @@ class Empleado {
     get sueldo() {
         return this._sueldo;
     }
-    // 1300
+    // Cañculos de impuestos//
     calculoSueldo_Neto() {
         let sueldoBase = this._sueldo;
         let impuestos = sueldoBase * 0.21;

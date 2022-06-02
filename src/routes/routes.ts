@@ -28,9 +28,14 @@ class IndexRoutes {
 // Agregar Empleados //
 
 
+
+
+
 private agregarInformatico = async (req: Request, res: Response) => {
+  //Campos del formulario//
   const { dni, nombre, edad, especialidades, sueldo, num_reparaciones } = req.body;
   await db.conectarBD();
+  // dSchema son los campos de empleados
   const dSchema = {
       _dni :dni,
       _nombre: nombre,
@@ -39,11 +44,17 @@ private agregarInformatico = async (req: Request, res: Response) => {
       _sueldo:sueldo,
       _num_reparaciones:num_reparaciones
   };
+  // Creas Empleados de tipo empleado//
   const oSchema = new Empleados(dSchema);
+  // Hasta que no se complete no lo guarda//
   await oSchema
+  // Para guardarlo //
     .save()
+    // Si se completa te manda el documento//
     .then((doc: any) => res.send(doc))
+    // Error//
     .catch((err: any) => res.send("Error: " + err));
+    // Se desconecta de la base de datos //
   await db.desconectarBD();
 };
 
@@ -203,13 +214,17 @@ private agregarInformatico = async (req: Request, res: Response) => {
 
       private actualizarCliente = async (req: Request, res: Response) => {
         await db.conectarBD();
+         //El parametro dni se asigna a la variable documento //
         const documento = req.params.dni;
+        // Le llega el formulario de cliente//
         const {  dni, nombre, edad } = req.body;
+        // Busca por el dni y lo actualiza //
         await Clientes.findOneAndUpdate(
           { _dni: documento },
           { _dni: dni, _nombre: nombre, _edad: edad},
           { new: true }
         )
+        // Te da el documento //
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -331,6 +346,7 @@ private agregarInformatico = async (req: Request, res: Response) => {
 
       private eliminarCliente = async (req: Request, res: Response) => {
         await db.conectarBD();
+        //dni se asigna a la variable documento //
         const documento = req.params.dni;
         await Clientes.findOneAndDelete({ _dni: documento })
           .then((doc: any) => res.send(doc))
@@ -360,7 +376,7 @@ private agregarInformatico = async (req: Request, res: Response) => {
       private eliminarProducto = async (req: Request, res: Response) => {
         await db.conectarBD();
         const idd = req.params.id;
-        await Productos.findOneAndDelete({ _id: idd })
+        await Productos.findOneAndDelete({ _codProducto: idd })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
     
@@ -388,6 +404,7 @@ private agregarInformatico = async (req: Request, res: Response) => {
         await db
           .conectarBD()
           .then(async (mensaje) => {
+            // Busca en clientes  //
             const query = await Clientes.find();
             res.json(query);
           })
@@ -455,9 +472,14 @@ private agregarInformatico = async (req: Request, res: Response) => {
         await db.desconectarBD();
       };
 
+
+
+      
       private listarVenta = async (req: Request, res: Response) => {
         await db.conectarBD();
+       //El parametro cod_compra se asigna a la variable codigo //   
         const codigo = req.params.codigo;
+        // Te busca uno de la cod_compra que tenga codigo  //
         await Ventas.findOne({ _cod_compra: codigo })
           .then((doc: any) => res.send(doc))
           .catch((err: any) => res.send("Error: " + err));
@@ -499,13 +521,16 @@ private agregarInformatico = async (req: Request, res: Response) => {
 
       private calculoSueldo = async (req: Request, res: Response) => {
         await db.conectarBD();
+        // Variables   //             
         let mEmpleado: Empleado = new Empleado("","",0,"",0)
         let dEmpleado: tEmpleado
+        // Array de salario //
         let arrayEmpleado: Array<mSalario> = []
-    
+        // Buscamos todos los empleados y es un array de documento que se guarda en query //
         const query = await Empleados.find({})
-
+          // Recorremos el array //
           for(dEmpleado of query){
+            // Si es un dependiente busca un dependiente y si no es informatico //
               if (dEmpleado._especialidades == 'Dependiente') {
               mEmpleado = new Dependiente(
                 dEmpleado._dni,
@@ -525,20 +550,22 @@ private agregarInformatico = async (req: Request, res: Response) => {
                 dEmpleado._num_reparaciones
               )
             }
-
+              // Variable total Salario//
               let totalS: number = 0;
-              totalS = mEmpleado.calculoSueldo_Neto()
 
+              totalS = mEmpleado.calculoSueldo_Neto()
+              // Variable cEmpleado que se a de tipo mSalario, y eso datos son lo que le va a llegar a la grafica//
               let cEmpleado: mSalario = {
                 _dni: null,
                 _nombre: null,
                 _sueldo: null
               }
-
+              // Le decimos a cada campo lo que vale  //
               cEmpleado._dni = mEmpleado.dni;
               cEmpleado._nombre = mEmpleado.nombre;
+              // Aquí le pasamos el sueldo totalS  //
               cEmpleado._sueldo = totalS;
-
+              // Añadimos a la array //
               arrayEmpleado.push(cEmpleado)
             
     
