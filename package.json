@@ -2,11 +2,11 @@
   "name": "proyecto_juniobackend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/server.js",
   "scripts": {
-    "start": "node app",
+    "start": "node ./dist/server.js",
     "dev": "nodemon ./dist/server.js"
-
+    
   },
   "repository": {
     "type": "git",
