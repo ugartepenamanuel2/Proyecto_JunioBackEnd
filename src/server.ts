@@ -6,22 +6,22 @@ import { routes } from './routes/routes'
 
 class Server {
     private app: express.Application
-    constructor() {
+    constructor(){
         this.app = express()
         this.config()
         this.routes()
     }
-    private async config() {
+    private async config(){
 
         this.app.set('port', process.env.PORT || 3000)
-        this.app.use(cors()) // evitar el error CORS
-        
+        this.app.use(cors()) 
+
         this.app.use(express.json()) // para que nuestro servidor entienda
         // los formatos json desde clientes
         this.app.use(morgan('dev'))  // Para que muestre las url invocadas
 
         this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Origin', '*' );
             res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
             res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
             res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
@@ -30,14 +30,13 @@ class Server {
 
     }
 
-    private routes() {
+    private routes(){
         this.app.use('/', routes)
     }
-    start() {
-        this.app.listen(this.app.get('port'),
-            () => {
-                console.log(`Server on port: ${this.app.get('port')}`)
-            })
+    start(){
+        this.app.listen(this.app.get('port'), () => {
+            console.log(`Server on port: ${this.app.get('port')}`)
+        })
     }
 }
 
